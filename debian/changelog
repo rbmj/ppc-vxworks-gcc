@@ -1,0 +1,5 @@
+powerpc-wrs-vxworks-gcc (4.8.0-1) unstable; urgency=low
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Robert Blair Mason Jr. (rbmj) <rbmj@verizon.net>  Sat, 05 Jan 2013 23:38:11 -0500

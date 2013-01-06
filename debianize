@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cp -r debian $1 #all we have to do so far...
