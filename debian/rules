@@ -24,12 +24,12 @@ override_dh_auto_configure:
 		--with-gnu-as \
 		--with-gnu-ld \
 		--with-headers \
-		--disable-shared \
 		--disable-libssp \
 		--disable-multilib \
 		--with-float=hard \
 		--enable-languages=c,c++ \
 		--enable-threads=vxworks \
+		--enable-libstdcxx \
 		--without-gconv \
 		--disable-libgomp \
 		--disable-nls \
@@ -49,4 +49,8 @@ override_dh_auto_clean:
 override_dh_auto_install:
 	cd $(BUILDDIR) ; \
 	make install DESTDIR=$(SRCDIR)/debian/powerpc-wrs-vxworks-gcc
+	#remove conflicts with other packages.
+	rm -rf $(SRCDIR)/debian/powerpc-wrs-vxworks-gcc/usr/share/info
+	rm -rf $(SRCDIR)/debian/powerpc-wrs-vxworks-gcc/usr/share/man/man7
+	rm -rf $(SRCDIR)/debian/powerpc-wrs-vxworks-gcc/usr/lib/libiberty.a
 
