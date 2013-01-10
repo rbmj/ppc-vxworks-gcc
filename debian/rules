@@ -54,3 +54,6 @@ override_dh_auto_install:
 	rm -rf $(SRCDIR)/debian/powerpc-wrs-vxworks-gcc/usr/share/man/man7
 	rm -rf $(SRCDIR)/debian/powerpc-wrs-vxworks-gcc/usr/lib/libiberty.a
 
+override_dh_strip:
+	# do not strip!
+
