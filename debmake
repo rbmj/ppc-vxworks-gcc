@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -e
+
+DOWNLOAD_URL='https://github.com/mirrors/gcc/archive/master.tar.gz'
+EXTRACTNAME='gcc'
+
+PKG='gcc'
+TGT='powerpc-wrs-vxworks'
+CURDIR=`pwd`
+PDIR=$(dirname "$CURDIR")
+
+VERSION_FULL=`dpkg-parsechangelog -c1 | grep Version | cut "-d " -f 2`
+TMP="echo $VERSION_FULL | tr '-' '\\n'"
+if [ "`eval $TMP | wc -l`" = "1" ] ; then
+    REVISION=""
+    VERSION=$VERSION_FULL
+else
+    REVISION=`eval $TMP | tail -1`
+    VERSION=`eval $TMP | head -n -1 | tr '\n' '-'`
+    VERSION=${VERSION%?} # get rid of extra dash at end
+fi
+unset TMP
+
+BUILDDIR="$PDIR/build"
+NEWSRCDIR="$BUILDDIR/$TGT-$PKG-$VERSION"
+ORIG_ARCHIVE="$BUILDDIR/$TGT-${PKG}_$VERSION.orig.tar.gz"
+
+mkdir -p "$BUILDDIR"
+
+#get/extract source
+if [ ! -f "$ORIG_ARCHIVE" ] ; then
+    rm -rf "$NEWSRCDIR"
+    wget -O "$ORIG_ARCHIVE" --no-check-certificate "$DOWNLOAD_URL"
+    cd "$BUILDDIR"
+    tar -xf "$ORIG_ARCHIVE"
+    mv "$EXTRACTNAME" "$NEWSRCDIR"
+    cd "$NEWSRCDIR"
+    ./contrib/download_prerequisites
+    cd "$CURDIR"
+fi
+
+cp -ar debian "$NEWSRCDIR"
+
+cd "$NEWSRCDIR"
+
+rm -f STMP_HOST_*
+
+if [ $# -eq 1 ] ; then
+    if [ $1 -eq 32 ] ; then
+        touch STMP_HOST_32
+        ARCH_FLAG="-ai386"
+    elif [ $1 -eq 64 ] ; then
+        touch SMTP_HOST_64
+        ARCH_FLAG="-aamd64"
+    fi
+fi
+
+debuild -e WIND_BASE $ARCH_FLAG
+

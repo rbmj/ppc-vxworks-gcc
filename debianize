@@ -1,3 +1,12 @@
 #!/bin/bash
 
+CWD=`pwd`
+ARCH_DIR=$1
+TGT='powerpc-wrs-vxworks'
+VERSION=4.8.0
+REVISION=2
+
+cd $1
+git archive master | tar -cf $TGT-gcc-
+
 cp -r debian $1 #all we have to do so far...

@@ -12,6 +12,18 @@
 SRCDIR="$(CURDIR)"
 BUILDDIR="$(CURDIR)/../powerpc-wrs-vxworks-gcc-build"
 
+ifeq ($(wildcard STMP_HOST_32),)
+HOST="x86_64-unknown-linux-gnu"
+else
+ifeq ($(wildcard STMP_HOST_64),)
+HOST="i686-pc-linux-gnu"
+else
+HOST=$(shell ./config.guess)
+endif
+
+BUILD=$(shell ./config.guess)
+TARGET="powerpc-wrs-vxworks"
+
 %:
 	dh $@ 
 
@@ -20,7 +32,9 @@ override_dh_auto_configure:
 	cd $(BUILDDIR) ; \
 	$(SRCDIR)/configure \
 		--prefix=/usr \
-		--target=powerpc-wrs-vxworks \
+		--build=$(BUILD) \
+		--host=$(HOST) \
+		--target=$(TARGET) \
 		--with-gnu-as \
 		--with-gnu-ld \
 		--with-headers \
