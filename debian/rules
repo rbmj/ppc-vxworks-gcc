@@ -12,16 +12,7 @@
 SRCDIR="$(CURDIR)"
 BUILDDIR="$(CURDIR)/../build-powerpc-wrs-vxworks-gcc"
 
-ifeq ($(wildcard STMP_HOST_32),)
-HOST="x86_64-unknown-linux-gnu"
-else
-ifeq ($(wildcard STMP_HOST_64),)
-HOST="i686-pc-linux-gnu"
-else
-HOST=$(shell ./config.guess)
-endif
-endif
-
+HOST=$(shell cat ../host)
 BUILD=$(shell ./config.guess)
 TARGET="powerpc-wrs-vxworks"
 
