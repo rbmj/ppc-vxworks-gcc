@@ -2,7 +2,7 @@ Source: powerpc-wrs-vxworks-gcc
 Section: devel
 Priority: extra
 Maintainer: Robert Blair Mason Jr. <rbmj@verizon.net>
-Build-Depends: debhelper (>= 8.0.0), zlib1g-dev, wrs-headers-installer, powerpc-wrs-vxworks-binutils
+Build-Depends: debhelper (>= 8.0.0), zlib1g-dev, wrs-headers, powerpc-wrs-vxworks-binutils
 Standards-Version: 3.9.3
 Homepage: http://gcc.gnu.org
 
