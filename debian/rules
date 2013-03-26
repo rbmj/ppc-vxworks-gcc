@@ -16,6 +16,9 @@ HOST=$(shell cat ../host)
 BUILD=$(shell ./config.guess)
 TARGET="powerpc-wrs-vxworks"
 
+#make sure it uses these options for target libraries
+TGTFLAGS="-mstrict-align -mlongcall"
+
 %:
 	dh $@ 
 
@@ -40,7 +43,9 @@ override_dh_auto_configure:
 		--disable-libgomp \
 		--disable-libmudflap \
 		--with-cpu-PPC603 \
-		--disable-symvers ; \
+		--disable-symvers \
+		CFLAGS_FOR_TARGET=$(TGTFLAGS) \
+		CXXFLAGS_FOR_TARGET=$(TGTFLAGS) ; \
 
 override_dh_auto_build:
 	cd $(BUILDDIR) ; \

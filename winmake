@@ -45,7 +45,9 @@ cd "$BUILDDIR"
 	--disable-libgomp \
 	--disable-libmudflap \
 	--with-cpu-PPC603 \
-	--disable-symvers
+	--disable-symvers \
+    CFLAGS_FOR_TARGET='-mlongcall -mstrict-align' \
+    CXXFLAGS_FOR_TARGET='-mlongcall -mstrict-align'
 
 make -j4
 make install DESTDIR="$INSTALLDIR"
