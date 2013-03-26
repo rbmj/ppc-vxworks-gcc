@@ -1,15 +1,15 @@
-Source: powerpc-wrs-vxworks-gcc
+Source: gcc-powerpc-wrs-vxworks
 Section: devel
 Priority: extra
 Maintainer: Robert Blair Mason Jr. <rbmj@verizon.net>
-Build-Depends: debhelper (>= 8.0.0), zlib1g-dev, wrs-headers, powerpc-wrs-vxworks-binutils
+Build-Depends: debhelper (>= 8.0.0), zlib1g-dev, wrs-headers, binutils-powerpc-wrs-vxworks
 Standards-Version: 3.9.3
 Homepage: http://gcc.gnu.org
 
-Package: powerpc-wrs-vxworks-gcc
+Package: gcc-powerpc-wrs-vxworks
 Architecture: any
 Pre-Depends: wrs-headers
-Depends: ${shlibs:Depends}, powerpc-wrs-vxworks-binutils, binutils-dev
+Depends: ${shlibs:Depends}, binutils-powerpc-wrs-vxworks, binutils-dev
 Description: GNU Cross Compiler to powerpc-wrs-vxworks
  GCC, the GNU Compiler Collection, is a GPL compiler and is a part of
  the GNU project.  This package provides a cross compilation environment

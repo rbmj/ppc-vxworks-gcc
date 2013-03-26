@@ -2,8 +2,8 @@
 
 set -e
 
-DOWNLOAD_URL='https://github.com/mirrors/gcc/archive/master.tar.gz'
-EXTRACTNAME='gcc-master'
+DOWNLOAD_URL='http://ftp.gnu.org/gnu/gcc/gcc-4.8.0/gcc-4.8.0.tar.gz'
+EXTRACTNAME='gcc-4.8.0'
 
 PKG='gcc'
 TGT='powerpc-wrs-vxworks'
@@ -23,8 +23,8 @@ fi
 unset TMP
 
 BUILDDIR="$CURDIR/build"
-NEWSRCDIR="$BUILDDIR/$TGT-$PKG-$VERSION"
-ORIG_ARCHIVE="$BUILDDIR/$TGT-${PKG}_$VERSION.orig.tar.gz"
+NEWSRCDIR="$BUILDDIR/$PKG-$TGT-$VERSION"
+ORIG_ARCHIVE="$BUILDDIR/$PKG-${TGT}_$VERSION.orig.tar.gz"
 
 mkdir -p "$BUILDDIR"
 

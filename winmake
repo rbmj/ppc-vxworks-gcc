@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -e
+
+TARGET=powerpc-wrs-vxworks
+
+DOWNLOAD_URL='http://ftp.gnu.org/gnu/gcc/gcc-4.8.0/gcc-4.8.0.tar.gz'
+EXTRACTNAME='gcc-4.8.0'
+
+CURDIR=`pwd`
+
+WINDIR="$CURDIR/win32"
+SRCDIR="$WINDIR/$EXTRACTNAME"
+BUILDDIR="$WINDIR/build-$EXTRACTNAME"
+INSTALLDIR="$WINDIR/install-$EXTRACTNAME"
+ORIG_ARCHIVE="$WINDIR/$TARGET-$EXTRACTNAME.tar.gz"
+
+mkdir -p "$BUILDDIR"
+mkdir -p "$INSTALLDIR"
+
+#get/extract source
+if [ ! -f "$ORIG_ARCHIVE" ] ; then
+    wget -O "$ORIG_ARCHIVE" --no-check-certificate "$DOWNLOAD_URL"
+    cd "$WINDIR"
+    tar -xf "$ORIG_ARCHIVE"
+    cd "$CURDIR"
+fi
+
+cd "$BUILDDIR"
+"$SRCDIR/configure" \
+	--prefix=/ \
+	--build=`"$SRCDIR/config.guess"` \
+	--target=$TARGET \
+	--host=i686-w64-mingw32 \
+	--with-gnu-as \
+	--with-gnu-ld \
+	--with-headers \
+	--disable-libssp \
+	--disable-multilib \
+	--with-float=hard \
+	--enable-languages=c,c++ \
+	--enable-threads=vxworks \
+	--enable-libstdcxx \
+	--without-gconv \
+	--disable-libgomp \
+	--disable-libmudflap \
+	--with-cpu-PPC603 \
+	--disable-symvers
+
+make -j4
+make install DESTDIR="$INSTALLDIR"
+

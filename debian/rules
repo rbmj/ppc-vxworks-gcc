@@ -10,7 +10,7 @@
 #export DH_VERBOSE=1
 
 SRCDIR="$(CURDIR)"
-BUILDDIR="$(CURDIR)/../build-powerpc-wrs-vxworks-gcc"
+BUILDDIR="$(CURDIR)/../build-gcc-powerpc-wrs-vxworks"
 
 HOST=$(shell cat ../host)
 BUILD=$(shell ./config.guess)
@@ -38,7 +38,6 @@ override_dh_auto_configure:
 		--enable-libstdcxx \
 		--without-gconv \
 		--disable-libgomp \
-		--disable-nls \
 		--disable-libmudflap \
 		--with-cpu-PPC603 \
 		--disable-symvers ; \
@@ -56,9 +55,9 @@ override_dh_auto_install:
 	cd $(BUILDDIR) ; \
 	make install DESTDIR=$(SRCDIR)/debian/powerpc-wrs-vxworks-gcc
 	#remove conflicts with other packages.
-	rm -rf $(SRCDIR)/debian/powerpc-wrs-vxworks-gcc/usr/share/info
-	rm -rf $(SRCDIR)/debian/powerpc-wrs-vxworks-gcc/usr/share/man/man7
-	rm -rf $(SRCDIR)/debian/powerpc-wrs-vxworks-gcc/usr/lib/libiberty.a
+	rm -rf $(SRCDIR)/debian/gcc-powerpc-wrs-vxworks/usr/share/info
+	rm -rf $(SRCDIR)/debian/gcc-powerpc-wrs-vxworks/usr/share/man/man7
+	rm -rf $(SRCDIR)/debian/gcc-powerpc-wrs-vxworks/usr/lib/libiberty.a
 
 override_dh_strip:
 	# do not strip!

@@ -1,5 +1,12 @@
-powerpc-wrs-vxworks-gcc (4.8.0-1) unstable; urgency=low
+gcc-powerpc-wrs-vxworks (4.8.0-2) unstable; urgency=low
 
-  * Initial release. (Closes: #XXXXXX)
+  * Non-maintainer upload.
+  * 
+
+ -- Robert Blair Mason Jr. (rbmj) <rbmj@verizon.net>  Tue, 26 Mar 2013 09:47:52 -0400
+
+gcc-powerpc-wrs-vxworks (4.8.0-1) unstable; urgency=low
+
+  * Non-maintainer upload.
 
  -- Robert Blair Mason Jr. (rbmj) <rbmj@verizon.net>  Sat, 05 Jan 2013 23:38:11 -0500
