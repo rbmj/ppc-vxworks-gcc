@@ -58,7 +58,7 @@ override_dh_auto_clean:
 
 override_dh_auto_install:
 	cd $(BUILDDIR) ; \
-	make install DESTDIR=$(SRCDIR)/debian/powerpc-wrs-vxworks-gcc
+	make install DESTDIR=$(SRCDIR)/debian/gcc-powerpc-wrs-vxworks
 	#remove conflicts with other packages.
 	rm -rf $(SRCDIR)/debian/gcc-powerpc-wrs-vxworks/usr/share/info
 	rm -rf $(SRCDIR)/debian/gcc-powerpc-wrs-vxworks/usr/share/man/man7
