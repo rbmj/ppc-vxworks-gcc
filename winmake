@@ -26,6 +26,8 @@ if [ ! -f "$ORIG_ARCHIVE" ] ; then
     cd "$CURDIR"
 fi
 
+TGTFLAGS='-mlongcall -mstrict-align -O2 -g'
+
 cd "$BUILDDIR"
 "$SRCDIR/configure" \
 	--prefix=/ \
@@ -46,8 +48,8 @@ cd "$BUILDDIR"
 	--disable-libmudflap \
 	--with-cpu-PPC603 \
 	--disable-symvers \
-    CFLAGS_FOR_TARGET='-mlongcall -mstrict-align' \
-    CXXFLAGS_FOR_TARGET='-mlongcall -mstrict-align'
+    CFLAGS_FOR_TARGET="$TGTFLAGS" \
+    CXXFLAGS_FOR_TARGET="$TGTFLAGS"
 
 make -j4
 make install DESTDIR="$INSTALLDIR"

@@ -17,7 +17,7 @@ BUILD=$(shell ./config.guess)
 TARGET="powerpc-wrs-vxworks"
 
 #make sure it uses these options for target libraries
-TGTFLAGS="-mstrict-align -mlongcall"
+TGTFLAGS="-mstrict-align -mlongcall -g -O2"
 
 %:
 	dh $@ 
