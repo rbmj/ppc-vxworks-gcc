@@ -8,8 +8,7 @@ Homepage: http://gcc.gnu.org
 
 Package: gcc-powerpc-wrs-vxworks
 Architecture: any
-Pre-Depends: wrs-headers
-Depends: ${shlibs:Depends}, binutils-powerpc-wrs-vxworks, binutils-dev
+Depends: ${shlibs:Depends}, binutils-powerpc-wrs-vxworks, binutils-dev, wrs-headers
 Description: GNU Cross Compiler to powerpc-wrs-vxworks
  GCC, the GNU Compiler Collection, is a GPL compiler and is a part of
  the GNU project.  This package provides a cross compilation environment

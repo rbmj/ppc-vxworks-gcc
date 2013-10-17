@@ -2,8 +2,8 @@
 
 set -e
 
-DOWNLOAD_URL='http://ftp.gnu.org/gnu/gcc/gcc-4.8.0/gcc-4.8.0.tar.gz'
-EXTRACTNAME='gcc-4.8.0'
+DOWNLOAD_URL='http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.gz'
+EXTRACTNAME='gcc-4.8.2'
 
 PKG='gcc'
 TGT='powerpc-wrs-vxworks'
