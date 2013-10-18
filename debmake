@@ -53,19 +53,15 @@ cd "$NEWSRCDIR"
 if [ $# -eq 1 ] ; then
     if [ $1 -eq 32 ] ; then
         echo i686-pc-linux-gnu > ../host
-        export CFLAGS="-g -O2 -m32"
         ARCH_FLAG="-ai386"
     elif [ $1 -eq 64 ] ; then
         echo x86_64-unknown-linux-gnu > ../host
-        export CFLAGS="-g -O2 -m32"
         ARCH_FLAG="-aamd64"
     fi
 else
     ./config.guess > ../host
-    export CFLAGS="-g -O2"
 fi
 
-export CXXFLAGS="$CFLAGS"
 
-debuild -e WIND_BASE -e CFLAGS -e CXXFLAGS $ARCH_FLAG
+debuild -e WIND_BASE $ARCH_FLAG
 

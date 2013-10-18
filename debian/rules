@@ -22,7 +22,31 @@ TGTFLAGS="-mstrict-align -mlongcall -g -O2"
 %:
 	dh $@ 
 
-override_dh_auto_configure:
+ifeq ($(HOST),$(BUILD))
+CONF_RULES=configure_both
+BUILD_RULES=build_both
+INSTALL_RULES=install_both
+CLEAN_RULES=clean_both
+else
+CONF_RULES=configure_host configure_target
+BUILD_RULES=build_host build_target
+INSTALL_RULES=install_host install_target
+CLEAN_RULES=clean_host clean_target
+ifeq ($(findstring i686,$(HOST)),i686)
+ARCH_FLAG="-m32"
+else
+ifeq ($(findstring amd64,$(HOST)),amd64)
+ARCH_FLAG="-m64"
+else
+#ERROR
+ARCH_FLAG=""
+endif
+endif
+endif
+
+override_dh_auto_configure: $(CONF_RULES)
+
+configure_both:
 	[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR)
 	cd $(BUILDDIR) ; \
 	$(SRCDIR)/configure \
@@ -45,24 +69,111 @@ override_dh_auto_configure:
 		--with-cpu-PPC603 \
 		--disable-symvers \
 		CFLAGS_FOR_TARGET=$(TGTFLAGS) \
-		CXXFLAGS_FOR_TARGET=$(TGTFLAGS) ; \
+		CXXFLAGS_FOR_TARGET=$(TGTFLAGS)
 
-override_dh_auto_build:
+configure_host:
+	[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR)
+	[ -d $(BUILDDIR)/host ] || mkdir $(BUILDDIR)/host
+	cd $(BUILDDIR)/host ; \
+	$(SRCDIR)/configure \
+		--prefix=/usr \
+		--build=$(BUILD) \
+		--host=$(HOST) \
+		--target=$(TARGET) \
+		--with-gnu-as \
+		--with-gnu-ld \
+		--with-headers \
+		--disable-libssp \
+		--disable-multilib \
+		--with-float=hard \
+		--enable-languages=c,c++ \
+		--enable-threads=vxworks \
+		--enable-libstdcxx \
+		--without-gconv \
+		--disable-libgomp \
+		--disable-libmudflap \
+		--with-cpu-PPC603 \
+		--disable-symvers \
+		CFLAGS_FOR_TARGET=$(TGTFLAGS) \
+		CXXFLAGS_FOR_TARGET=$(TGTFLAGS) \
+		CFLAGS="-g -O2 $(ARCH_FLAG)" \
+		CXXFLAGS="-g -O2 $(ARCH_FLAG)"	
+
+configure_target:
+	[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR)
+	[ -d $(BUILDDIR)/target ] || mkdir $(BUILDDIR)/target
+	cd $(BUILDDIR)/target ; \
+	$(SRCDIR)/configure \
+		--prefix=/usr \
+		--target=$(TARGET) \
+		--with-gnu-as \
+		--with-gnu-ld \
+		--with-headers \
+		--disable-libssp \
+		--disable-multilib \
+		--with-float=hard \
+		--enable-languages=c,c++ \
+		--enable-threads=vxworks \
+		--enable-libstdcxx \
+		--without-gconv \
+		--disable-libgomp \
+		--disable-libmudflap \
+		--with-cpu-PPC603 \
+		--disable-symvers \
+		CFLAGS_FOR_TARGET=$(TGTFLAGS) \
+		CXXFLAGS_FOR_TARGET=$(TGTFLAGS) 
+
+override_dh_auto_build: $(BUILD_RULES)
+
+build_both:
 	cd $(BUILDDIR) ; \
 	make -j4
 
-override_dh_auto_clean:
+build_host:
+	cd $(BUILDDIR)/host ; \
+	make all-host -j4
+
+build_target:
+	cd $(BUILDDIR)/target ; \
+	make -j4
+
+override_dh_auto_clean: $(CLEAN_RULES)
+
+clean_both:
 	[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR)
 	cd $(BUILDDIR) ; \
 	[ ! -f Makefile ] || make distclean
 
-override_dh_auto_install:
-	cd $(BUILDDIR) ; \
-	make install DESTDIR=$(SRCDIR)/debian/gcc-powerpc-wrs-vxworks
+clean_host:
+	[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR)
+	[ -d $(BUILDDIR)/host ] || mkdir $(BUILDDIR)/host
+	cd $(BUILDDIR)/host ; \
+	[ ! -f Makefile ] || make distclean
+
+clean_target:
+	[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR)
+	[ -d $(BUILDDIR)/target ] || mkdir $(BUILDDIR)/target
+	cd $(BUILDDIR)/target ; \
+	[ ! -f Makefile ] || make distclean
+
+
+override_dh_auto_install: $(INSTALL_RULES)
 	#remove conflicts with other packages.
 	rm -rf $(SRCDIR)/debian/gcc-powerpc-wrs-vxworks/usr/share/info
 	rm -rf $(SRCDIR)/debian/gcc-powerpc-wrs-vxworks/usr/share/man/man7
 	rm -rf $(SRCDIR)/debian/gcc-powerpc-wrs-vxworks/usr/lib/libiberty.a
+
+install_both:
+	cd $(BUILDDIR) ; \
+	make install DESTDIR=$(SRCDIR)/debian/gcc-powerpc-wrs-vxworks
+
+install_host:
+	cd $(BUILDDIR)/host ; \
+	make install-host DESTDIR=$(SRCDIR)/debian/gcc-powerpc-wrs-vxworks
+
+install_target:
+	cd $(BUILDDIR)/target ; \
+	make install-target DESTDIR=$(SRCDIR)/debian/gcc-powerpc-wrs-vxworks
 
 override_dh_strip:
 	# do not strip!
