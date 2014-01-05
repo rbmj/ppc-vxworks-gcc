@@ -1,0 +1,30 @@
+From af6c1102b870f188c7409df900c1be82bd623587 Mon Sep 17 00:00:00 2001
+From: rbmj <rbmj@verizon.net>
+Date: Sun, 5 Jan 2014 00:12:47 -0500
+Subject: [PATCH 3/3] Add macros to vxworks os_defines.h
+
+vxworks defines all of the _POSIX_TIMERS functions, but doesn't
+define the macro.  Configure looks for the _POSIX_TIMERS macro when
+checking for these functions.  This seems strange to me.  It seems like
+if the try_compile can find them, then everything should be fine.
+I'm not an expert though, and acinclude.m4 notes that there is a similar
+situation for darwin, so I'll just let it be this way for now.
+---
+ libstdc++-v3/config/os/vxworks/os_defines.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/libstdc++-v3/config/os/vxworks/os_defines.h b/libstdc++-v3/config/os/vxworks/os_defines.h
+index de2522e..edb6693 100644
+--- a/libstdc++-v3/config/os/vxworks/os_defines.h
++++ b/libstdc++-v3/config/os/vxworks/os_defines.h
+@@ -39,4 +39,7 @@
+ #endif
+ #define NOMINMAX 1
+ 
++#define _GLIBCXX_USE_NANOSLEEP 1
++#define _GLIBCXX_USE_CLOCK_REALTIME 1
++
+ #endif
+-- 
+1.8.4.rc3
+

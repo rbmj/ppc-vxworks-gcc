@@ -1,3 +1,9 @@
+gcc-powerpc-wrs-vxworks (4.8.2-1) unstable; urgency=low
+
+  * Add posix threading support
+
+ -- R Blair Mason (rbmj) <rbmj@verizon.net>  Sun, 05 Jan 2014 01:18:09 -0500
+
 gcc-powerpc-wrs-vxworks (4.8.2) unstable; urgency=low
 
   * Non-maintainer upload.

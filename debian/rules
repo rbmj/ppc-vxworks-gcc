@@ -61,8 +61,9 @@ configure_both:
 		--disable-multilib \
 		--with-float=hard \
 		--enable-languages=c,c++ \
-		--enable-threads=vxworks \
+		--enable-threads=posix \
 		--enable-libstdcxx \
+		--enable-libstdcxx-time \
 		--without-gconv \
 		--disable-libgomp \
 		--disable-libmudflap \
@@ -87,8 +88,9 @@ configure_host:
 		--disable-multilib \
 		--with-float=hard \
 		--enable-languages=c,c++ \
-		--enable-threads=vxworks \
+		--enable-threads=posix \
 		--enable-libstdcxx \
+		--enable-libstdcxx-time \
 		--without-gconv \
 		--disable-libgomp \
 		--disable-libmudflap \
@@ -113,8 +115,9 @@ configure_target:
 		--disable-multilib \
 		--with-float=hard \
 		--enable-languages=c,c++ \
-		--enable-threads=vxworks \
+		--enable-threads=posix \
 		--enable-libstdcxx \
+		--enable-libstdcxx-time \
 		--without-gconv \
 		--disable-libgomp \
 		--disable-libmudflap \

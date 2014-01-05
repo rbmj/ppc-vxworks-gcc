@@ -1,0 +1,3 @@
+vxworks-os-defines-nanosleep.patch
+vxworks-posix-thread-fixes.patch
+vxworks-pthread-enable.patch

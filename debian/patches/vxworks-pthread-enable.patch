@@ -1,0 +1,24 @@
+From dffd3ae2a8b421074b57eabbaa63948cefd18753 Mon Sep 17 00:00:00 2001
+From: rbmj <rbmj@verizon.net>
+Date: Sat, 4 Jan 2014 09:11:02 -0500
+Subject: [PATCH 1/3] Allowed posix as a thread option for vxworks
+
+---
+ gcc/config.gcc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/gcc/config.gcc b/gcc/config.gcc
+index 92d57dd..3fd9bb5 100644
+--- a/gcc/config.gcc
++++ b/gcc/config.gcc
+@@ -804,6 +804,7 @@ case ${target} in
+   case ${enable_threads} in
+     no) ;;
+     "" | yes | vxworks) thread_file='vxworks' ;;
++    posix) thread_file='posix' ;;
+     *) echo 'Unknown thread configuration for VxWorks'; exit 1 ;;
+   esac
+   ;;
+-- 
+1.8.4.rc3
+
