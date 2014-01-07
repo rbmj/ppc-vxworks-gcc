@@ -1,4 +1,4 @@
-From 586f1433faf96c202b32267e0e36ef5f8bfecebe Mon Sep 17 00:00:00 2001
+From 18e4c7a7942b8d8cd375a8f039e60bfb744aecd1 Mon Sep 17 00:00:00 2001
 From: rbmj <rbmj@verizon.net>
 Date: Sat, 4 Jan 2014 16:16:01 -0500
 Subject: [PATCH 2/3] Fix vxworks posix threading
@@ -6,9 +6,9 @@ Subject: [PATCH 2/3] Fix vxworks posix threading
 ---
  libgcc/config.host              |  8 ++++++++
  libgcc/config/t-vxworks-pthread | 14 ++++++++++++++
- libgcc/config/vxlib-pthread.c   | 36 ++++++++++++++++++++++++++++++++++++
- libgcc/gthr-posix.h             | 20 ++++++++++++++++++++
- 4 files changed, 78 insertions(+)
+ libgcc/config/vxlib-pthread.c   | 38 ++++++++++++++++++++++++++++++++++++++
+ libgcc/gthr-posix.h             | 27 ++++++++++++++++++++++++++-
+ 4 files changed, 86 insertions(+), 1 deletion(-)
  create mode 100644 libgcc/config/t-vxworks-pthread
  create mode 100644 libgcc/config/vxlib-pthread.c
 
@@ -53,10 +53,10 @@ index 0000000..9d0aff5
 +   esac`
 diff --git a/libgcc/config/vxlib-pthread.c b/libgcc/config/vxlib-pthread.c
 new file mode 100644
-index 0000000..229a1c1
+index 0000000..b9976fe
 --- /dev/null
 +++ b/libgcc/config/vxlib-pthread.c
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,38 @@
 +/* Copyright (C) 2014 Free Software Foundation, Inc.
 +   Contributed by Robert Mason <rbmj@verizon.net>
 +
@@ -81,12 +81,14 @@ index 0000000..229a1c1
 +see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 +<http://www.gnu.org/licenses/>.  */
 +
-+#include <pthread.h>
++/* VxWorks gthread support routines when in posix threads mode */
++
++#include <gthr.h>
 +
 +#define ATTRIBUTE_UNUSED __attribute__((unused))
 +
 +int
-+pthread_mutexattr_settype (pthread_mutexattr_t *a ATTRIBUTE_UNUSED, int t ATTRIBUTE_UNUSED)
++__gthrw_pthread_mutexattr_settype (pthread_mutexattr_t *a ATTRIBUTE_UNUSED, int t ATTRIBUTE_UNUSED)
 +{
 +  /* TODO:  Perhaps we can override the gthread mutex class to simulate
 +     non-recursive mutexes?  For now, since recursive mutexes cover
@@ -94,7 +96,7 @@ index 0000000..229a1c1
 +  return 0;
 +}
 diff --git a/libgcc/gthr-posix.h b/libgcc/gthr-posix.h
-index f0d8cd7..303b2bb 100644
+index f0d8cd7..fb56fa2 100644
 --- a/libgcc/gthr-posix.h
 +++ b/libgcc/gthr-posix.h
 @@ -33,6 +33,10 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
@@ -108,29 +110,39 @@ index f0d8cd7..303b2bb 100644
  
  #if ((defined(_LIBOBJC) || defined(_LIBOBJC_WEAK)) \
       || !defined(_GTHREAD_USE_MUTEX_TIMEDLOCK))
-@@ -130,6 +134,22 @@ __gthrw(pthread_cond_destroy)
+@@ -130,10 +134,31 @@ __gthrw(pthread_cond_destroy)
  
  __gthrw(pthread_key_create)
  __gthrw(pthread_key_delete)
 +
+ __gthrw(pthread_mutexattr_init)
+-__gthrw(pthread_mutexattr_settype)
+ __gthrw(pthread_mutexattr_destroy)
+ 
 +/* VxWorks does not define pthread_mutexattr_settype itself, and we need
 +   the constants and a prototype to be defined somewhere so the rest of 
 +   this file will compile (they will be ignored) */
 +#ifdef __VXWORKS__
 +
 +int
-+pthread_mutexattr_settype (pthread_mutexattr_t*, int);
++__gthrw_pthread_mutexattr_settype (pthread_mutexattr_t*, int);
 +
 +#define PTHREAD_MUTEX_NORMAL 0
 +#define PTHREAD_MUTEX_ERRORCHECK 0
 +#define PTHREAD_MUTEX_RECURSIVE 0
 +#define PTHREAD_MUTEX_DEFAULT 0
 +
++#else
++
++__gthrw(pthread_mutexattr_settype)
++
 +#endif 
 +
- __gthrw(pthread_mutexattr_init)
- __gthrw(pthread_mutexattr_settype)
- __gthrw(pthread_mutexattr_destroy)
++
++
+ 
+ #if defined(_LIBOBJC) || defined(_LIBOBJC_WEAK)
+ /* Objective-C.  */
 -- 
 1.8.4.rc3
 

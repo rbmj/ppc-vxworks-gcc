@@ -45,6 +45,8 @@ if [ ! -f "$ORIG_ARCHIVE" ] ; then
     cd "$CURDIR"
     echo Copying debian files into build tree
     cp -a debian "$NEWSRCDIR"
+    cd "$NEWSRCDIR"
+    cat debian/patches/*.patch | patch -p1
 fi
 
 cd "$NEWSRCDIR"
